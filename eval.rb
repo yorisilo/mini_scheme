@@ -135,6 +135,8 @@ end
 def apply(fun, args) # fun := [:prim, lambda { |x,y| x + y }] or [:closure,...]
   if primitive_fun?(fun)
     apply_primitive_fun(fun, args)
+  elsif immediate_val?(fun)
+    fun
   else
     lambda_apply(fun, args)
   end
@@ -156,6 +158,6 @@ def test
   puts _eval([:+, [:+, 1, 2], [:+, 1, 3]], env) == 7
   puts _eval([[:lam, [:x, :y], [:+, :x, :y]], 3, 2], env) == 5
   puts _eval([:let, [[:x, 3], [:y, 2]], [:+, :x, :y]], env) == 5
-  # puts _eval([[:lam, [:x, :y], [:+, :x, :y]], [[:lam, [:x], [:x]], 2], 3], env) == 5
-  # puts _eval([[:lam, [:x], [:x]], 2], env) == 2
+  puts _eval([[:lam, [:x, :y], [:+, :x, :y]], [[:lam, [:x], [:x]], 2], 3], env) == 5
+  puts _eval([[:lam, [:x], [:x]], 2], env) == 2
 end
